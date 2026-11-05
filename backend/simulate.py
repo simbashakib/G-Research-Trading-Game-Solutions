@@ -1,6 +1,7 @@
 """Simulate trading decisions and estimate their average score."""
 
 from dataclasses import dataclass
+from bisect import bisect_right
 import math
 import random
 import statistics
@@ -16,6 +17,29 @@ class Result:
     score: float
     trade_turns: list[int]
     seconds: float
+
+
+def empirical_values(samples, horizon, lockout):
+    """Build V using the observed offers as equally likely future rewards."""
+    ordered = sorted(samples)
+    count = len(ordered)
+    tail_sums = [0.0] * (count + 1)
+    for i in range(count - 1, -1, -1):
+        tail_sums[i] = tail_sums[i + 1] + ordered[i]
+
+    values = [0.0] * (horizon + 1)
+    for n in range(1, horizon + 1):
+        A = values[n - 1]
+        B = values[max(0, n - lockout - 1)]
+        threshold = A - B
+
+        # V(n) = A + average(max(0, x - threshold)).
+        # Sorted offers and tail sums avoid scanning every sample for each n.
+        i = bisect_right(ordered, threshold)
+        excess = (tail_sums[i] - (count - i) * threshold) / count
+        values[n] = A + max(0.0, excess)
+
+    return values
 
 
 def simulate(play, rewards: list[float], lockout: int = 15) -> Result:
@@ -128,6 +152,24 @@ if __name__ == "__main__":
     import unittest
 
     class GameTests(unittest.TestCase):
+        def test_empirical_values_against_all_small_game_choices(self):
+            from functools import lru_cache
+
+            samples = [-2.0, 1.0, 7.0]
+            for lockout in (0, 1, 2, 15):
+                @lru_cache(None)
+                def optimal(n):
+                    if n <= 0:
+                        return 0.0
+                    return sum(
+                        max(optimal(n - 1), x + optimal(n - lockout - 1))
+                        for x in samples
+                    ) / len(samples)
+
+                values = empirical_values(samples, 8, lockout)
+                for n, value in enumerate(values):
+                    self.assertAlmostEqual(value, optimal(n))
+
         def test_lockout_and_observations(self):
             calls = []
 

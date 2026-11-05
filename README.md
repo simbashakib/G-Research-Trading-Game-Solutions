@@ -46,6 +46,8 @@ Rewards are independent draws. Accepting adds the full reward to your score and 
 
 Round 1 uses exponential rewards with mean 10 (rate 0.1). Round 2 uses a fixed distribution that your strategy is not told. The experiment uses a mixture distribution for Round 2 by default. You can pass `round_2_distribution` to `run_experiments`, choosing `exponential`, `uniform`, `lognormal`, or `mixture`; all have mean 10. Performance depends on this choice.
 
+The Round 2 strategy skips the first 100 turns to collect observations, then builds an empirical value table. It records every offer, including during lockout, and rebuilds the table at the next eligible turn after 100 new observations. The current offer is excluded from fitting its own threshold. `LEARNING_TURNS` and `REFIT_EVERY` in `round_2.py` control these intervals; game history resets at turn 1.
+
 This is a local recreation of the solo rules, not the official server. There are no competitors or shared rewards.
 
 ## Results
