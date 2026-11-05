@@ -2,10 +2,17 @@
 
 ## Files
 
-- `round_1.py`: write your Round 1 decision.
-- `round_2.py`: write your Round 2 decision.
-- `experiment.py`: click Run to see both strategies' results.
-- `simulate.py`: all the backend machinery and its checks. You can ignore this file.
+```text
+round_1.py          Your Round 1 decision
+round_2.py          Your Round 2 decision
+experiment.py       Click Run to see your results
+backend/
+    simulate.py     Game machinery and checks; no need to edit
+requirements.txt    Required Python packages
+README.md           These instructions
+```
+
+You only need the three Python files at the top level for everyday work. `.vscode/` stores the editor setup, and `.venv/` holds the installed packages. The environment and Python cache folders are ignored by Git and hidden in VS Code's Explorer.
 
 VS Code uses this project's `.venv` environment, which has NumPy and SciPy installed. Keep the interpreter set to `.venv` when running experiments.
 
@@ -53,4 +60,4 @@ The mean is a simulation estimate, not an exact expected value. A fixed seed mak
 
 ## Backend checks
 
-The checks live inside `simulate.py` and run only when that file is executed directly with `python3 simulate.py`. They do not run during your experiments. For normal use, just run `experiment.py`.
+The checks live inside `backend/simulate.py` and run only when that file is executed directly with `.venv/bin/python backend/simulate.py`. They do not run during your experiments. For normal use, just run `experiment.py`.
