@@ -14,7 +14,7 @@ for n in range(1, T + 1):
     V[n] = A + mean * np.exp(-threshold / mean)
 
 
-def round_1(reward, lockout, t, T, your_score, other_scores, is_locked):
+def round_1(reward, lockout, t, T, your_score, is_locked):
     if is_locked:
         return False
 

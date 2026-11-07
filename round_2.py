@@ -9,7 +9,7 @@ V = []
 last_fit = 0
 
 
-def round_2(reward, lockout, t, T, your_score, other_scores, is_locked):
+def round_2(reward, lockout, t, T, your_score, is_locked):
     global last_fit
 
     if t == 1:

@@ -12,12 +12,6 @@ requirements.txt    Required Python packages
 README.md           These instructions
 ```
 
-You only need the three Python files at the top level for everyday work. `.vscode/` stores the editor setup, and `.venv/` holds the installed packages. The environment and Python cache folders are ignored by Git and hidden in VS Code's Explorer.
-
-VS Code uses this project's `.venv` environment, which has NumPy and SciPy installed. Keep the interpreter set to `.venv` when running experiments.
-
-To set up a fresh checkout, run `python3 -m venv .venv`, then `.venv/bin/python -m pip install -r requirements.txt`, and select `.venv/bin/python` as the interpreter in VS Code.
-
 ## Write an answer and run it
 
 Each strategy receives the current offer and returns `True` to accept or `False` to skip. Complete your decision underneath the existing lockout check. Every path through your function must return a boolean.
@@ -35,7 +29,6 @@ An unfinished answer gets a message explaining that it needs to return `True` or
 | `t` | Current turn, starting at 1. |
 | `T` | Total number of turns (2,000). |
 | `your_score` | Sum of accepted rewards so far. |
-| `other_scores` | Empty in this solo simulator. |
 | `is_locked` | Whether you are currently unable to trade. |
 
 You do not need to use every input. If you add memory to your strategy, reset it at `t == 1` so each game starts fresh.

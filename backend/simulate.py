@@ -55,7 +55,7 @@ def simulate(play, rewards: list[float], lockout: int = 15) -> Result:
 
     for t, reward in enumerate(rewards, start=1):
         is_locked = t <= locked_until
-        accept = play(reward, lockout, t, len(rewards), score, [], is_locked)
+        accept = play(reward, lockout, t, len(rewards), score, is_locked)
         if not isinstance(accept, bool):
             raise InvalidDecision(
                 f"Your strategy returned {accept!r} on turn {t}. "
@@ -181,12 +181,12 @@ if __name__ == "__main__":
             self.assertEqual(result.trade_turns, [1, 17, 33])
             self.assertEqual(result.score, 3)
             self.assertEqual(len(calls), 34)
-            self.assertTrue(all(args[6] for args in calls[1:16]))
+            self.assertTrue(all(args[5] for args in calls[1:16]))
             self.assertEqual(calls[16][4], 1.0)
             self.assertEqual(simulate(always, [1.0] * 4, 0).score, 4)
 
         def test_complete_games_and_reproducibility(self):
-            def accept_positive(reward, lockout, t, T, your_score, other_scores, is_locked):
+            def accept_positive(reward, lockout, t, T, your_score, is_locked):
                 return not is_locked and reward > 0
 
             rewards = generate_rewards("mixture", 2000, 10, random.Random(42))
